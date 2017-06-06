@@ -386,7 +386,7 @@ private command runAllTests pInfo
 		  put tLine & return after tUsefulOutput
 	   end if
    end repeat
-   write tUsefulOutput to stdout
+   write tTestOutput to stdout
    
    runTestProcessOutput "IDE", "All IDE tests", tTestOutput
    

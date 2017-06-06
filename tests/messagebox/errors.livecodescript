@@ -55,6 +55,7 @@ on TestMessageBoxExecutionError
    put "edit the script of stack nonexistent" into tScript
    
    ideExecuteScript tScript, empty, false, tValidScript
+   TestDiagnostic "it:" && it
    TestAssert "execute script with script error result", \
          matchText(line 1 of it, "^91,\d+,1$")
    TestAssert "execute script with script error script invalid", tValidScript is tScript
