@@ -97,9 +97,19 @@ end update
 command updateDefaultList
    local tDefault
    put the long id of button "Default" of me into tDefault
+   
+   local tHandlers
+   put revSEDefaultHandlers() into tHandlers
+   set the text of tDefault to tHandlers
+   
    set the label of tDefault to "Add default handler..."
-  -- set the text of tDefault to revSEDefaultHandlers()
 end updateDefaultList
+
+on menuPick pItem
+   if the long id of the target is the long id of button "Default" of me then
+      revSEAddDefaultHandler pItem
+   end if
+end menuPick
 
 command updateSelectedHandler
    local tObject
