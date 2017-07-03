@@ -2,11 +2,13 @@
 
 -- Resize the group, placing the filter field below the list of
 -- handlers.
+constant kPadding = 2
 command resize
-   local tList, tFilter, tRect, tLeft, tWidth, tHeight, tTop, tBottom
+   local tList, tFilter, tRect, tLeft, tWidth, tHeight, tTop, tBottom, tDefault
    put the long id of group "Left Handler List" of me into tList
    put the long id of field "Filter" of me into tFilter
-
+   put the long id of button "Default" of me into tDefault
+   
    -- Capture the target dimensions exactly once.  Otherwise,
    -- rubberbanding can occur
    put the rect of me into tRect
@@ -15,23 +17,31 @@ command resize
    put item 2 of tRect into tTop
    put item 4 of tRect into tBottom
    put tBottom - tTop into tHeight
-
+   
    -- Aim to put the filter field below the list of handlers.
    -- FIXME What happens when the space is to short to show the filter field?
    lock screen
    set the width of tFilter to tWidth
    set the bottom of tFilter to tBottom
    set the left of tFilter to tLeft
-
-   set the top of tList to tTop
+   
+   set the width of tDefault to tWidth
+   set the top of tDefault to tTop
+   set the left of tDefault to tLeft
+   
    set the left of tList to tLeft
    set the width of tList to tWidth
    set the cMaxWidth of tList to tWidth
    set the cMinWidth of tList to tWidth
-   set the height of tList to (tHeight - the height of tFilter)
-   set the cMaxHeight of tList to (tHeight - the height of tFilter)
-   set the cMinHeight of tList to (tHeight - the height of tFilter)
-
+   
+   local tListHeight
+   put tHeight - the height of tFilter - the height of tDefault  \
+         - kPadding into tListHeight
+   set the height of tList to tListHeight
+   set the cMaxHeight of tList to tListHeight
+   set the cMinHeight of tList to tListHeight
+   set the top of tList to the bottom of tDefault + kPadding
+   
    send "resize" to group "Left Handler List" of me
    unlock screen
 end resize
@@ -39,9 +49,10 @@ end resize
 command update pDontUpdateSelectedHandler, pClearFilter
    lock screen
    
-   local tObject, tFilter
+   local tObject, tFilter, tDefault
    put the long id of group "Left Handler List" of me into tObject
    put the long id of field "Filter" of me into tFilter
+   put the long id of button "Default" of me into tDefault
    
    set the cCallback of tObject to "handlerSelected"
    set the cCallbackTarget of tObject to the long id of me
@@ -78,8 +89,17 @@ command update pDontUpdateSelectedHandler, pClearFilter
       send "update" to tFilter
    end if
    
+   updateDefaultList
+   resize
    unlock screen
 end update
+
+command updateDefaultList
+   local tDefault
+   put the long id of button "Default" of me into tDefault
+   set the label of tDefault to "Add default handler..."
+  -- set the text of tDefault to revSEDefaultHandlers()
+end updateDefaultList
 
 command updateSelectedHandler
    local tObject

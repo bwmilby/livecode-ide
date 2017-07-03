@@ -2933,3 +2933,47 @@ end revSESetScript
 on revSEIndentScript
    dispatch "scriptFormat" to field "Script" of me with "script"
 end revSEIndentScript
+
+function revSEDefaultHandlers
+   local tEntries
+   put ideDocsFetchLCSEntries() into tEntries
+   
+   /*
+   local tType, tObject, tKind
+   put revSEGetCurrentObject() into tObject
+   put word 1 of the name of tObject into tType
+   if tType is "widget" then
+      put the kind of tObject into tKind
+   end if
+   
+   if tKind is empty then
+      
+   end if
+   
+   
+   local tDefaultScript
+   put seDefaultScript(tType, tStyle) into tDefaultScript
+   textSetScriptRaw tDefaultScript
+   
+   local tDefaultSelection
+   put seDefaultScriptSelection(tType, tStyle) into tDefaultSelection
+   
+   # OK-2008-08-19 : When a default script is put into an object, the object should be marked as modified
+   # in the script editor, as the script in the field is not the same as the object's actual script.
+   if tDefaultScript is not empty then
+      seSetObjectState sObjectId, "edited"
+   end if
+   */
+   return empty
+end revSEDefaultHandlers
+
+function revSEDefaultScriptOfHandler
+   local tType, tObject, tKind
+   put revSEGetCurrentObject() into tObject
+   put word 1 of the name of tObject into tType
+   if tType is "widget" then
+      put the kind of tObject into tKind
+   end if
+   
+   return empty
+end revSEDefaultScriptOfHandler
