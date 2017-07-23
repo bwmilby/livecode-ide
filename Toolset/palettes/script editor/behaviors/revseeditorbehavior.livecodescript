@@ -115,6 +115,9 @@ command initialize
    
    set the backgroundColor of field "Script" of me to sePrefGet("editor,backgroundcolor")
    set the hScrollbar of field "Script" of me to (sePrefGet("editor,hscrollbar") is "true")
+   set the layerMode of field "Script" of me to "Scrolling"
+   set the layerMode of group "Mutables" of me to "Scrolling"
+
    
    -- See bug 16773. Mac likes an odd scrollbarwidth,
    -- Windows requires a scrollbarwidth > 16
