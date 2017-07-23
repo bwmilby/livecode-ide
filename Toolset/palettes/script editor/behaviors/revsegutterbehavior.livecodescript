@@ -315,7 +315,7 @@ command updateLineNumbers pTextEdited, pOldNumber, pNewNumber, pContext
    repeat pContext["numberOfAdditions"] times
       send "addLines kLineAdd" to me in 0 milliseconds
    end repeat
-   send "updateScroll" to me in 0 milliseconds
+   updateScroll
 end updateLineNumbers
 
 command addLines pNumberToAdd

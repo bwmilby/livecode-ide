@@ -1088,7 +1088,13 @@ command updateGutterRequest pOffset, pSelectedLine, pOldLines, pNewLines, pTextC
    if there is a group "Gutter" of me then
       send "updateScroll" to group "Gutter" of me
    end if
-   send "updateGutterDo" to me in 5 milliseconds
+   
+   # BUGFIX-20140
+   # Due to blocking nature of scrolling and key presses, don't send in time.
+   # UI effect is Gutter lags behind scrolling of Script Editor
+   ###send "updateGutterDo" to me in 5 milliseconds
+   
+   updateGutterDo
    put the result into sGutterUpdateRequest
 end updateGutterRequest
 
@@ -2212,9 +2218,11 @@ on rawKeyDown pKey
          put "right" into tKeyName
          break
       case kKeyUpArrow
+         wait 0 milliseconds with messages -- allow gutter updates when arrow key held down
          put "up" into tKeyName
          break
       case kKeyDownArrow
+         wait 0 milliseconds with messages -- allow gutter updates when arrow key held down
          put "down" into tKeyName
          break
    end switch
