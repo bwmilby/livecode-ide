@@ -679,7 +679,9 @@ on mouseUp pButtonNumber
    put the clickloc into tClickLoc
    -- We might delete the target if it is a breakpoint, so do mouseUp
    -- handling with a send.
-   send "gutterMouseUp tTarget, tClickLoc" to me in 0 millisecs
+   --send "gutterMouseUp tTarget, tClickLoc" to me in 0 milliseconds
+   -- delaying mouseUp seems to cause mouseUp to get missed if BP clicked quickly in succession.
+   gutterMouseUp tTarget, tClickLoc
 end mouseUp
 
 on gutterMouseUp pTarget, pClickLoc
