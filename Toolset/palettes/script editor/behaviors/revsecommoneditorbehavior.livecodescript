@@ -1812,11 +1812,14 @@ end optionKeyDown
 
 
 on scrollBarDrag
+   lock screen
    if the short name of the target is "Gutter" or the short name of the owner of the target is "Gutter" then
+      unlock screen
       exit scrollBarDrag
    end if
    
    updateGutterRequest empty, empty, empty, empty, false, true
+   unlock screen
 end scrollBarDrag
 
 on keyDown pChar

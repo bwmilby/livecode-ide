@@ -33,9 +33,12 @@ local sErrors
 #   Causes the gutter to update itself.
 command update pOffset, pSelectedLine, pOldNumber, pNewNumber, pTextChanged, pUpdateCompilationErrors, pForceBreakpointRedraw
    local tContext, tUpdateRequired
+   
+   lock screen
    put updateGetContext(pOffset, pSelectedLine, pOldNumber, pNewNumber, pTextChanged, pUpdateCompilationErrors, pForceBreakpointRedraw, tContext) into tUpdateRequired
    
    if not tUpdateRequired then
+      unlock screen
       exit update
    end if
    
@@ -50,8 +53,6 @@ command update pOffset, pSelectedLine, pOldNumber, pNewNumber, pTextChanged, pUp
    if tContext["object"] is not empty then
       put tContext["object"] into sLastObject
    end if
-   
-   lock screen
    
    updateBreakpoints pOffset, pSelectedLine, pOldNumber, pNewNumber, pTextChanged, tContext
    updateLineNumbers pTextChanged, pOldNumber, pNewNumber, tContext
