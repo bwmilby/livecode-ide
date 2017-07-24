@@ -115,6 +115,9 @@ command initialize
    
    set the backgroundColor of field "Script" of me to sePrefGet("editor,backgroundcolor")
    set the hScrollbar of field "Script" of me to (sePrefGet("editor,hscrollbar") is "true")
+   set the layerMode of field "Script" of me to "Scrolling"
+   set the layerMode of group "Mutables" of me to "Scrolling"
+
    
    -- See bug 16773. Mac likes an odd scrollbarwidth,
    -- Windows requires a scrollbarwidth > 16
@@ -943,10 +946,11 @@ end getLastGoneToLine
 #   Deselects the last line that was selected by the goLine command if there was one
 #   and it is still selected.
 command deselectLastGoneToLine
+   lock screen
    get the selectedChunk
    -- MM-2012-06-20: [[ Bug 10027 ]] Make sure there was a last line selected - causes bugs deselects elsewhere within the IDE.
    if sLastSelectedGoneToChunk is not empty and word 2 of it is item 1 of sLastSelectedGoneToChunk and word 4 of it is item 2 of sLastSelectedGoneToChunk then
-      lock screen
+      
       lock messages
       local tSelobj
       put revIDESelectedObjects() into tSelobj
@@ -956,12 +960,13 @@ command deselectLastGoneToLine
       end if
       set the backgroundColor of char (item 1 of sLastSelectedGoneToChunk) to (item 2 of sLastSelectedGoneToChunk) of field "Script" of me to empty
       unlock messages
-      unlock screen
+      
    end if
    put empty into sLastSelectedGoneToChunk
    
    # We update the gutter here to remove the current line indicator
    updateGutterRequest empty, empty, empty, empty, false, false
+   unlock screen
 end deselectLastGoneToLine
 
 

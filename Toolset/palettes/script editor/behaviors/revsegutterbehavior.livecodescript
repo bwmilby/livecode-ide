@@ -33,9 +33,12 @@ local sErrors
 #   Causes the gutter to update itself.
 command update pOffset, pSelectedLine, pOldNumber, pNewNumber, pTextChanged, pUpdateCompilationErrors, pForceBreakpointRedraw
    local tContext, tUpdateRequired
+   
+   lock screen
    put updateGetContext(pOffset, pSelectedLine, pOldNumber, pNewNumber, pTextChanged, pUpdateCompilationErrors, pForceBreakpointRedraw, tContext) into tUpdateRequired
    
    if not tUpdateRequired then
+      unlock screen
       exit update
    end if
    
@@ -50,8 +53,6 @@ command update pOffset, pSelectedLine, pOldNumber, pNewNumber, pTextChanged, pUp
    if tContext["object"] is not empty then
       put tContext["object"] into sLastObject
    end if
-   
-   lock screen
    
    updateBreakpoints pOffset, pSelectedLine, pOldNumber, pNewNumber, pTextChanged, tContext
    updateLineNumbers pTextChanged, pOldNumber, pNewNumber, tContext
@@ -315,7 +316,7 @@ command updateLineNumbers pTextEdited, pOldNumber, pNewNumber, pContext
    repeat pContext["numberOfAdditions"] times
       send "addLines kLineAdd" to me in 0 milliseconds
    end repeat
-   send "updateScroll" to me in 0 milliseconds
+   updateScroll
 end updateLineNumbers
 
 command addLines pNumberToAdd
@@ -678,7 +679,9 @@ on mouseUp pButtonNumber
    put the clickloc into tClickLoc
    -- We might delete the target if it is a breakpoint, so do mouseUp
    -- handling with a send.
-   send "gutterMouseUp tTarget, tClickLoc" to me in 0 millisecs
+   --send "gutterMouseUp tTarget, tClickLoc" to me in 0 milliseconds
+   -- delaying mouseUp seems to cause mouseUp to get missed if BP clicked quickly in succession.
+   gutterMouseUp tTarget, tClickLoc
 end mouseUp
 
 on gutterMouseUp pTarget, pClickLoc

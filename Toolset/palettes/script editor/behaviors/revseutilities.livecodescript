@@ -12,6 +12,7 @@
 on preOpenStack
    set the behavior of stack "revSETemplate" of me to the long id of stack revIDEScriptEditorBehavior("stack")
    send "setBehaviors" to stack "revSETemplate" of me
+   set the acceleratedRendering of me to true
 end preOpenStack
 
 # Because all script editors are substacks of this stack, we should delete them here
